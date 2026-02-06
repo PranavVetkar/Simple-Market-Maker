@@ -5,7 +5,7 @@ class SimpleMarketMaker:
     def __init__(self, symbol='BTC/USDT'):
         self.exchange = ccxt.binance()
         self.symbol = symbol
-        self.spread = 0.001  # 0.1% spread target
+        self.spread = 0.001
 
     def get_market_price(self):
         ticker = self.exchange.fetch_ticker(self.symbol)
@@ -17,7 +17,6 @@ class SimpleMarketMaker:
             try:
                 mid_price = self.get_market_price()
                 
-                # Calculate the 'Bid' and 'Ask'
                 bid_price = mid_price * (1 - self.spread)
                 ask_price = mid_price * (1 + self.spread)
                 
@@ -25,9 +24,6 @@ class SimpleMarketMaker:
                 print(f"  🔹 PLACING BID: ${bid_price:,.2f} (Buy)")
                 print(f"  🔸 PLACING ASK: ${ask_price:,.2f} (Sell)")
                 print(f"  💰 Target Spread: ${ask_price - bid_price:.2f}")
-
-                # In a live bot, you would use self.exchange.create_limit_buy_order()
-                # and self.exchange.create_limit_sell_order() here.
                 
                 time.sleep(5)
             except Exception as e:
